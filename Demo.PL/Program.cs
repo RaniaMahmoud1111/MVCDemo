@@ -10,7 +10,6 @@ namespace Demo.PL
         {
             var builder = WebApplication.CreateBuilder(args);
 
-
             // this instead of the configer services in startup
             #region Configur Services (that run using DI)
 
