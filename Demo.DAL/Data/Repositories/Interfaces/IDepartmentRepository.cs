@@ -9,7 +9,7 @@ namespace Demo.DAL.Data.Repositories.Interfaces
 {
     // remember we dev against interface not against class 
     // Interface means :code Contract 
-    internal interface IDepartmentRepository
+   public interface IDepartmentRepository
     {
         // signature for properity
         //1. get all (rt : list , array ... Icollection(if need to make operations,IEnumerable(prefered here) ,here we not need IQuerable as we not need to make filteration on result get all data  ) )
@@ -22,7 +22,7 @@ namespace Demo.DAL.Data.Repositories.Interfaces
         // these tricks differ in performance 
 
 
-        IEnumerable<Department> GetAll(bool withTracking);
+        IEnumerable<Department> GetAll(bool withTracking=false);
         //2. get by id 
 
         Department GetById(int id);
