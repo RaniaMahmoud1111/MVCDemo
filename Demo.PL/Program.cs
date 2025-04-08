@@ -1,4 +1,7 @@
+using Demo.BLL.Services;
 using Demo.DAL.Data;
+using Demo.DAL.Data.Repositories.Classes;
+using Demo.DAL.Data.Repositories.Interfaces;
 using Microsoft.EntityFrameworkCore;
 
 namespace Demo.PL
@@ -15,20 +18,24 @@ namespace Demo.PL
 
             // Add services to the container.
             builder.Services.AddControllersWithViews();
-            //  builder.Services.AddSingleton<AppDbContext>();
-            // builder.Services.AddScoped<AppDbContext>(); 
-            //   builder.Services.AddTransient<AppDbContext>();
+            // life time of obj by DI
+            //  builder.Services.AddSingleton<AppDbContext>();//Per run your app (log exception, cashing )
+            // builder.Services.AddScoped<AppDbContext>(); // per resquest use same obj in different operations ( the best)
+            //   builder.Services.AddTransient<AppDbContext>();// per operation 
 
 
-            #endregion
             // action delegate  has no return  take one parameter 
-
             builder.Services.AddDbContext<AppDbContext>(options => 
             {
                 options.UseSqlServer(builder.Configuration.GetConnectionString("DefaultConnection"));
             
             });// here you register both AppDbcontext , dbContextOptions
-          
+
+
+           builder.Services.AddScoped<IDepartmentRepository, DepartmentRepository>();
+            builder.Services.AddScoped<IDepartmentService, DepartmentService>();
+             
+            #endregion
 
 
             var app = builder.Build();

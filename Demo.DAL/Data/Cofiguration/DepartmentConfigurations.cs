@@ -18,7 +18,10 @@ namespace Demo.DAL.Data.Cofiguration
             builder.Property(D => D.Name).HasColumnType("varchar(20)");
             builder.Property(D => D.Code).HasColumnType("varchar(20)");
             builder.Property(D => D.CreatedOn).HasDefaultValueSql("GETDATE()");// for insert only and not changes  
-            builder.Property(D => D.LastModifiedOn).HasComputedColumnSql();// calc each run (for each update )
+          //  builder.Property(D => D.LastModifiedOn).HasComputedColumnSql();// calc each run (for each update )
+            builder.Property(D => D.LastModifiedOn)
+       .HasComputedColumnSql("GETDATE()"); // This will set LastModifiedOn to the current timestamp on update
+
 
         }
 

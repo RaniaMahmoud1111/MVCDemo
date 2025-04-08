@@ -52,6 +52,7 @@ objects do not create other objects on which they rely to do their work
 namespace Demo.DAL.Data.Repositories.Classes
 {
     // primary constructor .net 8 c#12 
+
     public class DepartmentRepository : IDepartmentRepository
     {
         private readonly AppDbContext _dbContext;
