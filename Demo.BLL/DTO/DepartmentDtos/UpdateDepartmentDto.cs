@@ -4,9 +4,9 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace Demo.BLL.DTO
+namespace Demo.BLL.DTO.DepartmentDtos
 {
-   public class UpdateDepartmentDto
+    public class UpdateDepartmentDto
     {
         public int Id { get; set; }
         public string Name { get; set; } = string.Empty;// if i not send name it will be set empty string 

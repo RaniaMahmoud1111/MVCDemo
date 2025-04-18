@@ -1,5 +1,6 @@
-﻿using Demo.BLL.DTO;
-using Demo.DAL.Models;
+﻿using Demo.BLL.DTO.DepartmentDtos;
+using Demo.BLL.DTO.DepartmentDtos;
+using Demo.DAL.Models.DepartmentModel;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -8,7 +9,7 @@ using System.Threading.Tasks;
 
 namespace Demo.BLL.Factories
 {
-    // static that will has extension methods 
+    // static class  that will has extension methods 
     public static  class DepartmentFactory
     {
         public static DepartmentDto ToDepartmentDto(this Department D)
