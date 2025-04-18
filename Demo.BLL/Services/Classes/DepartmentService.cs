@@ -1,5 +1,7 @@
-﻿using Demo.BLL.DTO;
+﻿using Demo.BLL.DTO.DepartmentDtos;
+using Demo.BLL.DTO.DepartmentDtos;
 using Demo.BLL.Factories;
+using Demo.BLL.Services.Interfaces;
 using Demo.DAL.Data.Repositories.Interfaces;
 using Demo.DAL.Models;
 using System;
@@ -9,9 +11,9 @@ using System.Reflection.Metadata.Ecma335;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace Demo.BLL.Services
+namespace Demo.BLL.Services.Classes
 {
-    // primary constructor .net 8 feature  to avoid parameterless cleating constructor 
+    // primary constructor .net 8 feature  to avoid parameterless creating constructor 
     public class DepartmentService(IDepartmentRepository _departmentRepository) : IDepartmentService
     {
         // private readonly IDepartmentRepository _departmentRepository = departmentRepository;

@@ -1,5 +1,5 @@
 ﻿using Demo.DAL.Data.Repositories.Interfaces;
-using Demo.DAL.Models;
+using Demo.DAL.Models.DepartmentModel;
 using Microsoft.EntityFrameworkCore;
 using System;
 using System.Collections.Generic;
@@ -53,58 +53,10 @@ namespace Demo.DAL.Data.Repositories.Classes
 {
     // primary constructor .net 8 c#12 
 
-    public class DepartmentRepository : IDepartmentRepository
+    // here level of DI (ask clr to create obj) change from GenericRepository to DepartmentRepository
+    public class DepartmentRepository(AppDbContext _dbContext) : GenericRepository<Department>(_dbContext), IDepartmentRepository
     {
-        private readonly AppDbContext _dbContext;
-        public DepartmentRepository(AppDbContext appDbContext)
-        {
-            _dbContext = appDbContext;
-        }
-
-
-        // Controller =>BLL =>Repository =>db so not deal directly with db 
-        public int Add(Department Entity)
-        {
-            _dbContext.Departments.Add(Entity);//added
-          return  _dbContext.SaveChanges();//update db
-        
-        }
-
-        public int Delete(Department Entity)
-        {
-            
-           _dbContext.Departments.Remove(Entity);// remove locally  [status deleted]
-            return _dbContext.SaveChanges();// applied in db
-        }
-
-        public IEnumerable<Department> GetAll(bool withTracking = false)
-        {
-            // get data withou tracking 
-            if(withTracking)
-            {
-                return _dbContext.Departments.ToList();
-            }
-
-            return _dbContext.Departments.AsNoTracking().ToList();
-        }
-
-        public Department GetById(int id)
-        {
-
-            // pass id to find linq operator
-            return _dbContext.Departments.Find(id);// if you have composite primary key you can send it as params
-           // return _dbContext.Find<Department>(id);
-        }
-
-        public int Update(Department Entity)
-        {
-            _dbContext.Departments.Update(Entity);// update local[status modified ]
-
-            return _dbContext.SaveChanges();// applied in db
-        }
-
-        
-
+      
 
     }
 }

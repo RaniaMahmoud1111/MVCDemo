@@ -1,5 +1,6 @@
 ﻿using Demo.BLL.DTO;
-using Demo.BLL.Services;
+using Demo.BLL.DTO.DepartmentDtos;
+using Demo.BLL.Services.Interfaces;
 using Demo.DAL.Models;
 using Demo.PL.ViewModels;
 using Humanizer;
@@ -172,5 +173,70 @@ namespace Demo.PL.Controllers
         }
 
         #endregion
-    }
+
+        #region Delete  Department 
+        [HttpGet]
+        public IActionResult Delete(int? id)
+        {
+            if (!id.HasValue) return BadRequest();
+
+            var department = _departmentService.GetDepartmentById(id.Value);
+            if (department == null) return NotFound();
+            return View(department);
+            
+        }
+
+        // we can not make overload by type of method 
+        // we can make overload by type ,number, order of parameters  
+
+        // here we know ensure that incomming url has id so not need to make it nullable 
+        [HttpPost]
+        public IActionResult Delete(int id)
+        {
+            if(id==0) return BadRequest();// means dept not exit and 0 is the default value 
+
+            try // means department already exist 
+            {
+                bool deleted = _departmentService.DeleteDepartment(id);
+                if (deleted)
+                {
+                  return  RedirectToAction(nameof(Index));
+                }
+                else
+                {
+                    ModelState.AddModelError(string.Empty,"Department is not deleted! ");
+                    //   return View("Delete");// this bind on null error so make exception 
+                  return  RedirectToAction(nameof(Delete),new {id});
+
+                }
+
+            }
+            catch (Exception ex)
+            {
+
+                if (_environment.IsDevelopment())
+                {
+                    //1. Dev Env => log error in console and return same view with error msg
+                    ModelState.AddModelError(string.Empty, ex.Message);
+                   return   RedirectToAction("Index");
+                }
+                else
+                {
+                    //2. Deployment => log error in file | table in db and return error view(include frindly error msg) not error msg
+
+                    _logger.LogError(ex.Message);
+                    return RedirectToAction("Error");
+                }
+
+            }
+        }
+            #endregion
+
+
+
+
+
+
+
+        }
 }

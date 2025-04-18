@@ -1,4 +1,4 @@
-﻿using Demo.DAL.Models;
+﻿using Demo.DAL.Models.DepartmentModel;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -9,7 +9,7 @@ namespace Demo.DAL.Data.Repositories.Interfaces
 {
     // remember we dev against interface not against class 
     // Interface means :code Contract 
-   public interface IDepartmentRepository
+    public interface IDepartmentRepository:IGenericRepository<Department>
     {
         // signature for properity
         //1. get all (rt : list , array ... Icollection(if need to make operations,IEnumerable(prefered here) ,here we not need IQuerable as we not need to make filteration on result get all data  ) )
@@ -22,20 +22,7 @@ namespace Demo.DAL.Data.Repositories.Interfaces
         // these tricks differ in performance 
 
 
-        IEnumerable<Department> GetAll(bool withTracking=false);
-        //2. get by id 
-
-        Department GetById(int id);
-        //3. update 
-
-        // we make rt int as it return how many rows affected 
-        int Update(Department Entity);
-        //4. delete
-
-        int Delete(Department Entity);
-        //5. insert 
-
-        int Add(Department Entity);
+      
 
 
     }
