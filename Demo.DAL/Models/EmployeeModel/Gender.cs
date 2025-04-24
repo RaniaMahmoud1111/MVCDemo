@@ -10,5 +10,6 @@ namespace Demo.DAL.Models.EmployeeModel
     {
         Female=1,
         Male=2,
+        None
     }
 }

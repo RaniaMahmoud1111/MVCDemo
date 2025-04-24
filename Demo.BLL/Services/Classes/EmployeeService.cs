@@ -12,7 +12,7 @@ using System.Threading.Tasks;
 
 namespace Demo.BLL.Services.Classes
 {
-    // check if you register service  in program to work as DI 
+    // check if you register service  in program to work with DI 
     public class EmployeeService(IEmployeeRepository _employeeRepository,IMapper _mapper) : IEmployeeService
     {
         public IEnumerable<EmployeeDto> GetAllEmployees(bool withTracking)

@@ -35,10 +35,10 @@ namespace Demo.DAL.Data.Repositories.Classes
             // get data withou tracking 
             if (withTracking)
             {
-                return _dbContext.Set<TEntity>().ToList();
+                return _dbContext.Set<TEntity>().Where(e=>e.IsDeleted==false).ToList();
             }
 
-            return _dbContext.Set<TEntity>().AsNoTracking().ToList();
+            return _dbContext.Set<TEntity>().Where(e=>e.IsDeleted==false).AsNoTracking().ToList();
         }
 
         public TEntity GetById(int id)

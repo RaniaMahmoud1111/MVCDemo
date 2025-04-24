@@ -7,7 +7,7 @@ using Humanizer;
 using Microsoft.AspNetCore.Mvc;
 
 namespace Demo.PL.Controllers
-{//we not write any  bud=siness logic in controller or in repository so we make service to include all Blogic and the controller can call these services to use that logic
+{//we not write any  business logic in controller or in repository so we make service to include all Blogic and the controller can call these services to use that logic
  //
  //base url => controller => service => repos   
  // senario of DI => obj of  department controller => obj of department service => obj of department repos => obj of dbcotext =>obj of dbcotext options(implicitly)
@@ -15,29 +15,23 @@ namespace Demo.PL.Controllers
         ILogger<DepartmentController> _logger ,IWebHostEnvironment _environment) : Controller
     {
         //  private readonly IDepartmentService _departmentService = departmentService;
-
         public IActionResult Index()//master page of controller 
         {
-            var departments = _departmentService.GetAllDepartments();// here 
+            var departments = _departmentService.GetAllDepartments();
 
             return View(departments);
 
         }
 
-
-
         #region Department Create action 
 
 
         [HttpGet]
-        public IActionResult Create()
-        {
-            return View();
-
-        }
+        public IActionResult Create()=> View();
+        
 
         [HttpPost]
-        public IActionResult Create(CreatedDepartmentDTO departmentDto )
+        public IActionResult Create(DepartmentViewModel departmentDto )
         {
             //check data before deal with db
 
@@ -45,12 +39,27 @@ namespace Demo.PL.Controllers
             {
                 try
                 {
-                    int result=_departmentService.AddDepartment(departmentDto);
+                    // manual mapping 
+                    var departmentCreatedDto = new CreatedDepartmentDTO()
+                    {
+                        Name=departmentDto.Name,
+                        Code=departmentDto.Code,
+                        Description=departmentDto.Description,
+                        DateOfCreation=departmentDto.DateOfCreation,
+                        
+                    };
+
+                    int result=_departmentService.AddDepartment(departmentCreatedDto);
                     if (result > 0)
+                    {
+                        TempData["Msg"] = "Department created Successfully!!";
                         return RedirectToAction(nameof(Index));
+                    }
                     else
                     {
+                        TempData["Msg"] = "Department creation Failed ";
                         ModelState.AddModelError(string.Empty, "Department can`t be created !!");
+                        return RedirectToAction(nameof(Index));
                     }
                 }
                 catch (Exception ex)
@@ -82,6 +91,7 @@ namespace Demo.PL.Controllers
 
             return View(departmentDto);
         }
+
         #endregion
 
         #region Details of Department
@@ -122,9 +132,9 @@ namespace Demo.PL.Controllers
             };
             return View(departmentViewModel);
         }
-        [ValidateAntiForgeryToken]// to prevent calling action from another toollike post man
+        [ValidateAntiForgeryToken]// to prevent calling action from another tool like post man
         [HttpPost]
-        //[FromRoute]int? id  this to prevent change it from insect in front 
+        //[FromRoute]int? id  this to prevent change it from insert in front 
         public IActionResult Edit([FromRoute]int? id,DepartmentViewModel viewModel)
         {
             if (!ModelState.IsValid) return View(viewModel);
@@ -142,10 +152,15 @@ namespace Demo.PL.Controllers
                 };
                 int result = _departmentService.UpdateDepartment(updatedDepartment);
                 if (result > 0)
+                {
+                    TempData["Msg"] = "Department Updated Successfully!!";
                     return RedirectToAction(nameof(Index));
+                }
                 else
                 {
-                    ModelState.AddModelError(string.Empty, "Department can`t be created !!");
+                    TempData["Msg"] = "Department Update Failed ";
+                    ModelState.AddModelError(string.Empty, "Department can`t be updated !!");
+                    return RedirectToAction(nameof(Index));
                 }
 
 
@@ -194,19 +209,22 @@ namespace Demo.PL.Controllers
         public IActionResult Delete(int id)
         {
             if(id==0) return BadRequest();// means dept not exit and 0 is the default value 
-
-            try // means department already exist 
+            // here means department already exist 
+            try
             {
-                bool deleted = _departmentService.DeleteDepartment(id);
+                bool deleted = _departmentService.DeleteDepartment(id);//boolen to check if is deleted as we applay soft delete
                 if (deleted)
                 {
+                    TempData["Msg"] = "Department Deleted Successfully ";
                   return  RedirectToAction(nameof(Index));
                 }
                 else
                 {
                     ModelState.AddModelError(string.Empty,"Department is not deleted! ");
                     //   return View("Delete");// this bind on null error so make exception 
-                  return  RedirectToAction(nameof(Delete),new {id});
+                    TempData["Msg"] = "Department Deleted Failed!  ";
+
+                    return RedirectToAction(nameof(Delete),new {id});
 
                 }
 
