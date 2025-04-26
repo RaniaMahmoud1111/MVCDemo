@@ -1,4 +1,5 @@
 ﻿using Demo.DAL.Models.DepartmentModel;
+using Demo.DAL.Models.EmployeeModel;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -21,8 +22,8 @@ namespace Demo.DAL.Data.Repositories.Interfaces
         // in apis we prefer readonly as it return same i not need to iterat on it it return in json 
         // these tricks differ in performance 
 
+        IQueryable<Department> GetDepartmentByName(string name);// is related only for department
 
-      
 
 
     }

@@ -30,6 +30,7 @@ namespace Demo.PL
             builder.Services.AddDbContext<AppDbContext>(options => 
             {
                 options.UseSqlServer(builder.Configuration.GetConnectionString("DefaultConnection"));
+                options.UseLazyLoadingProxies();
             
             });// here you register both AppDbcontext , dbContextOptions
 
@@ -40,6 +41,7 @@ namespace Demo.PL
             // builder.Services.AddAutoMapper(typeof(MappingProfiles).Assembly);// not always work
             builder.Services.AddAutoMapper(M => M.AddProfile(new MappingProfiles()));
             builder.Services.AddScoped<IEmployeeService,EmployeeService>();
+            builder.Services.AddScoped<IUnitOfWork, UnitOfWork>();
              
             #endregion
 

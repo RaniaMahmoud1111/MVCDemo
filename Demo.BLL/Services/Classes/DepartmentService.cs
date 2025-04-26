@@ -14,8 +14,12 @@ using System.Threading.Tasks;
 namespace Demo.BLL.Services.Classes
 {
     // primary constructor .net 8 feature  to avoid parameterless creating constructor 
-    public class DepartmentService(IDepartmentRepository _departmentRepository) : IDepartmentService
+    // here i no long need that obj IDepartmentRepository _departmentRepository i use IunitOfWork which create IDepartmentRepository _departmentRepository in side it 
+
+    public class DepartmentService(/*IDepartmentRepository _departmentRepository*/IUnitOfWork unitOfWork) : IDepartmentService
     {
+        private readonly IUnitOfWork _unitOfWork = unitOfWork;
+
         // private readonly IDepartmentRepository _departmentRepository = departmentRepository;
 
         // types of mapping 
@@ -32,7 +36,25 @@ namespace Demo.BLL.Services.Classes
         {
             // use obj member method GettAll() that exist in Dept Repo  so we need to apply DI
 
-            var departments = _departmentRepository.GetAll();
+            var departments = _unitOfWork.DepartmentRepository.GetAll();
+            //1. manual mapping 
+            //    var departmentsToReturn = departments.Select(D => new DepartmentDTO()
+            //    {
+            //        Id = D.Id,
+            //        Name = D.Name,
+            //        Description = D.Description,
+            //        DateOfCreation = DateOnly.FromDateTime(D.CreatedOn.Value)
+            //    });
+            //     return departmentsToReturn;
+
+            // 2.extension method 
+            return departments.Select(D => D.ToDepartmentDto());
+        } 
+        public IEnumerable<DepartmentDto> SearchDepartmentByName(string name)  //here okay
+        {
+            // use obj member method GettAll() that exist in Dept Repo  so we need to apply DI
+
+            var departments = _unitOfWork.DepartmentRepository.GetDepartmentByName(name.ToLower());
             //1. manual mapping 
             //    var departmentsToReturn = departments.Select(D => new DepartmentDTO()
             //    {
@@ -52,7 +74,7 @@ namespace Demo.BLL.Services.Classes
         //  Get  Department by id 
         public DepartmentDetailsDto? GetDepartmentById(int id)
         {
-            var department = _departmentRepository.GetById(id);
+            var department = _unitOfWork.DepartmentRepository.GetById(id);
             //1. manual mapping
             //if (department == null) return null;
             //else
@@ -89,13 +111,17 @@ namespace Demo.BLL.Services.Classes
         public int AddDepartment(CreatedDepartmentDTO departmentDto)//its return int means how many row affected
         {
             var department = departmentDto.ToEntity();
-            return _departmentRepository.Add(department);
+           _unitOfWork.DepartmentRepository.Add(department);
+            return _unitOfWork.SaveChanges();
+
         }
 
         // Update Department
         public int UpdateDepartment(UpdateDepartmentDto departmentDto)
         {
-            return _departmentRepository.Update(departmentDto.ToEntity());
+
+            _unitOfWork.DepartmentRepository.Update(departmentDto.ToEntity());
+            return _unitOfWork.SaveChanges();
         }
 
 
@@ -103,12 +129,13 @@ namespace Demo.BLL.Services.Classes
 
         public bool DeleteDepartment(int id)
         {
-            var department = _departmentRepository.GetById(id);
+            var department = _unitOfWork.DepartmentRepository.GetById(id);
             if (department is null) return false;
             else
             {
-                int result = _departmentRepository.Delete(department);
-                return result > 0 ? true : false;
+                 _unitOfWork.DepartmentRepository.Delete(department);
+
+                return _unitOfWork.SaveChanges() > 0 ? true : false;
             }
 
         }

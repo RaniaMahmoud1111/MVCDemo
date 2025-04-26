@@ -18,12 +18,12 @@ namespace Demo.DAL.Data.Repositories.Interfaces
         //3. update 
 
         // we make rt int as it return how many rows affected 
-        int Update(TEntity Entity);
+        void Update(TEntity Entity);
         //4. delete
 
-        int Delete(TEntity Entity);
+        void Delete(TEntity Entity);
         //5. insert 
 
-        int Add(TEntity Entity);
+        void Add(TEntity Entity);
     }
 }
