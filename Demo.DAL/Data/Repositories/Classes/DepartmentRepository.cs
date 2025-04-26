@@ -56,7 +56,9 @@ namespace Demo.DAL.Data.Repositories.Classes
     // here level of DI (ask clr to create obj) change from GenericRepository to DepartmentRepository
     public class DepartmentRepository(AppDbContext _dbContext) : GenericRepository<Department>(_dbContext), IDepartmentRepository
     {
-      
-
+        public IQueryable<Department> GetDepartmentByName(string name)
+        {
+            return _dbContext.Departments.Where(D => D.Name.ToLower().Contains(name));
+        }
     }
 }

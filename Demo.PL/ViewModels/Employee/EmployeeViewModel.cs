@@ -31,6 +31,8 @@ namespace Demo.PL.ViewModels.Employee
         public Gender Gender { get; set; }
         public EmployeeType EmployeeType { get; set; }
 
+        public int? DepartmentId { get; set; }
+
 
     }
 }

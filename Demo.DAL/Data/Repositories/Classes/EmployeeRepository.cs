@@ -15,9 +15,9 @@ namespace Demo.DAL.Data.Repositories.Classes
     //
     public class EmployeeRepository(AppDbContext dbContext) : GenericRepository<Employee>(dbContext), IEmployeeRepository
     {
-        public IQueryable<Employee> GetEmployeeByAddress(string address)
+        public IQueryable<Employee> GetEmployeeByName(string name)
         {
-            throw new NotImplementedException();
+            return dbContext.Employees.Where(E => E.Name.ToLower().Contains(name));
         }
     }
 }

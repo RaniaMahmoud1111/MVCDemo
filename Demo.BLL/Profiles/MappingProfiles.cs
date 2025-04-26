@@ -1,5 +1,6 @@
 ﻿using AutoMapper;
 using Demo.BLL.DTO.EmployeeDtos;
+using Demo.DAL.Models.DepartmentModel;
 using Demo.DAL.Models.EmployeeModel;
 using Microsoft.Extensions.Options;
 using System;
@@ -16,7 +17,8 @@ namespace Demo.BLL.Profiles
         {
             CreateMap<Employee, EmployeeDto>()
                 .ForMember(dest => dest.EmpGender, options => options.MapFrom(src => src.Gender))
-                .ForMember(dest => dest.EmpType, Options => Options.MapFrom(src => src.EmployeeType));
+                .ForMember(dest => dest.EmpType, Options => Options.MapFrom(src => src.EmployeeType))
+                .ForMember(dest=>dest.Department,Options=>Options.MapFrom(src=>src.Department !=null ? src.Department.Name :null));
              
 
 

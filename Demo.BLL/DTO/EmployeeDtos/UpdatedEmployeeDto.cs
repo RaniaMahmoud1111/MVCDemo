@@ -33,6 +33,8 @@ namespace Demo.BLL.DTO.EmployeeDtos
         public DateOnly HiringDate { get; set; }
         public Gender Gender { get; set; }
         public EmployeeType EmployeeType { get; set; }
+        public string? Department { get; set; }// i just need the name of department 
+
 
     }
 }

@@ -22,5 +22,7 @@ namespace Demo.BLL.DTO.EmployeeDtos
         [Display(Name = "Employee Type")]
         public string EmpType { get; set; }// deal with as string 
 
+        public string? Department { get; set; }// i just need the name of department 
+
     }
 }

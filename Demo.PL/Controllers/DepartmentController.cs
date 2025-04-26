@@ -15,9 +15,14 @@ namespace Demo.PL.Controllers
         ILogger<DepartmentController> _logger ,IWebHostEnvironment _environment) : Controller
     {
         //  private readonly IDepartmentService _departmentService = departmentService;
-        public IActionResult Index()//master page of controller 
+        public IActionResult Index(string? DepartmentSearchName)//master page of controller 
         {
-            var departments = _departmentService.GetAllDepartments();
+            dynamic departments = null;
+            if (string.IsNullOrEmpty(DepartmentSearchName))
+            departments = _departmentService.GetAllDepartments();
+            else
+                departments = _departmentService.SearchDepartmentByName(DepartmentSearchName);
+
 
             return View(departments);
 
@@ -31,7 +36,7 @@ namespace Demo.PL.Controllers
         
 
         [HttpPost]
-        public IActionResult Create(DepartmentViewModel departmentDto )
+        public IActionResult Create(DepartmentViewModel viewModel)
         {
             //check data before deal with db
 
@@ -39,13 +44,13 @@ namespace Demo.PL.Controllers
             {
                 try
                 {
-                    // manual mapping 
+                    // manual mapping from   DepartmentViewModel =>  CreatedDepartmentDTO
                     var departmentCreatedDto = new CreatedDepartmentDTO()
                     {
-                        Name=departmentDto.Name,
-                        Code=departmentDto.Code,
-                        Description=departmentDto.Description,
-                        DateOfCreation=departmentDto.DateOfCreation,
+                        Name=viewModel.Name,
+                        Code=viewModel.Code,
+                        Description=viewModel.Description,
+                        DateOfCreation=viewModel.DateOfCreation,
                         
                     };
 
@@ -89,7 +94,7 @@ namespace Demo.PL.Controllers
 
             }
 
-            return View(departmentDto);
+            return View(viewModel);
         }
 
         #endregion

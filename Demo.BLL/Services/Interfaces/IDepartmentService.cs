@@ -7,6 +7,7 @@ namespace Demo.BLL.Services.Interfaces
         int AddDepartment(CreatedDepartmentDTO departmentDto);
         bool DeleteDepartment(int id);
         IEnumerable<DepartmentDto> GetAllDepartments();
+        IEnumerable<DepartmentDto> SearchDepartmentByName(string name );
         DepartmentDetailsDto? GetDepartmentById(int id);
         int UpdateDepartment(UpdateDepartmentDto departmentDto);
     }

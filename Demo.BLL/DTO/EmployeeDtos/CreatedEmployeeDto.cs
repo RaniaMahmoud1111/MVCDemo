@@ -35,5 +35,9 @@ namespace Demo.BLL.DTO.EmployeeDtos
         [Display(Name="Employee Type")]
         public EmployeeType EmployeeType { get; set; }
 
+        public int? DepartmentId { get; set; }
+
+
+
     }
 }

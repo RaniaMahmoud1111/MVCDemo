@@ -11,11 +11,12 @@ namespace Demo.BLL.Services.Interfaces
     {
         // Get All Emps
         IEnumerable<EmployeeDto> GetAllEmployees(bool withTracking=false);
+        IEnumerable<EmployeeDto> SearchEmployeeByName(string name);
 
         EmployeeDetailsDto GetEmployeeById(int id);
 
-        int CreateEmployee(CreatedEmployeeDto employee);
-        int UpdateEmployee(UpdatedEmployeeDto employee);
+      int CreateEmployee(CreatedEmployeeDto employee);
+      int UpdateEmployee(UpdatedEmployeeDto employee);
 
         bool DeleteEmployee(int id);// apply soft delete 
     }

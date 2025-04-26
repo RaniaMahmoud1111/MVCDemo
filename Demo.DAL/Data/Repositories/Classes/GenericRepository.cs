@@ -10,24 +10,25 @@ using System.Threading.Tasks;
 
 namespace Demo.DAL.Data.Repositories.Classes
 {
-   public class GenericRepository<TEntity>(AppDbContext _dbContext) : IGenericRepository<TEntity> where TEntity : BaseEntity
+    //i not need save changes as i will applay unit of work and not make returntype of (add,update,delete)that represent nof rows affected in will make it void 
+    public class GenericRepository<TEntity>(AppDbContext _dbContext) : IGenericRepository<TEntity> where TEntity : BaseEntity
     {
-      
 
         // Controller =>BLL =>Repository =>db so not deal directly with db 
-        public int Add(TEntity Entity)
+        public  void Add(TEntity Entity)
         {
            _dbContext.Set<TEntity>().Add(Entity);//added
            // _dbContext.Add(Entity);//here can detect typr of TEntity 
-            return _dbContext.SaveChanges();//update db
+            //return _dbContext.SaveChanges();//update db  
+
 
         }
 
-        public int Delete(TEntity Entity)
+        public void Delete(TEntity Entity)
         {
 
             _dbContext.Set<TEntity>().Remove(Entity);// remove locally  [status deleted]
-            return _dbContext.SaveChanges();// applied in db
+            //return _dbContext.SaveChanges();// applied in db
         }
 
         public IEnumerable<TEntity> GetAll(bool withTracking = false)
@@ -49,11 +50,11 @@ namespace Demo.DAL.Data.Repositories.Classes
                                                    // return _dbContext.Find<TEntity>(id);
         }
 
-        public int Update(TEntity Entity)
+        public void Update(TEntity Entity)
         {
             _dbContext.Set<TEntity>().Update(Entity);// update local[status modified ]
 
-            return _dbContext.SaveChanges();// applied in db
+            //return _dbContext.SaveChanges();// applied in db
         }
 
     }
